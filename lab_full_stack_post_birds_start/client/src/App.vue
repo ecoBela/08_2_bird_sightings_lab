@@ -9,7 +9,8 @@
 import SightingsForm from './components/SightingsForm';
 import SightingsGrid from './components/SightingsGrid';
 import SightingService from './services/SightingService.js';
-
+import {eventBus} from "./main.js"
+ 
 export default {
   name: 'app',
   components: {
@@ -23,12 +24,22 @@ export default {
   },
 	mounted() {
     this.fetchSightings();
+    
+    eventBus.$on("sighting-added", (sighting) => {
+      this.sightings.push(sighting)
+    })
   },
   methods: {
     fetchSightings() {
       SightingService.getSightings()
         .then(sightings => this.sightings = sightings);
+    },
+    newSightings() {
+      SightingService.postSightings()
+        .then()
     }
+    
+    
   }
 }
 </script>
